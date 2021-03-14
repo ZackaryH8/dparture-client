@@ -1,0 +1,9 @@
+/node_modules/
+/public/build/
+/src/views/public/tube1.svelte
+/src/interfaces
+.DS_Store
+
+# IDEs
+.idea
+.vscode

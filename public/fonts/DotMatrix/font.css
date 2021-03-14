@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Dot Matrix Bold';
+    src: url('DotMatrixBold.woff2') format('woff2'), url('DotMatrixBold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Dot Matrix';
+    src: url('DotMatrix.woff2') format('woff2'), url('DotMatrix.woff') format('woff');
+}
