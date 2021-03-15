@@ -9,7 +9,7 @@
 ## Screenshots
 
 <img src="https://i.imgur.com/IdaVnCf.png" alt="drawing" width="500"/>
-<img src="https://i.imgur.com/SS0lmDu.png" alt="drawing" width="500"/>
+<img src="https://i.imgur.com/dYRQOAE.png" alt="drawing" width="500"/>
 
 ## Contribute
 
