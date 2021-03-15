@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { colors } from '../assets/data/tflColors';
     import Select from 'svelte-select';
+    import { getLineBGColor, getLineTextColor } from '../helpers/color';
 
     import _naptanIDs from '../assets/data/naptan';
     let naptanIDs = _naptanIDs;
@@ -64,15 +64,6 @@
         return `${round} Mins`;
     };
 
-    const getLineBGColor = (name: string): string => {
-        return colors.find((color: any) => color.name === name)?.hex;
-    };
-
-    /* Handle Line Title readability */
-    const getLineTextColor = (name: string): string => {
-        if (name === 'circle' || name === 'hammersmith-city' || name === 'waterloo-city') return '#282828';
-    };
-
     const setSaveLocation = (e) => {
         localStorage.saveLocation = e.target.checked;
     };
@@ -110,58 +101,62 @@
 </script>
 
 <main>
-    <h3>{currentTime}</h3>
+    <div id="tube">
+        <h3>{currentTime}</h3>
 
-    <div class="select">
-        <Select
-            items={naptanIDs}
-            bind:selectedValue={_currentNaptan}
-            on:select={handleSelect}
-            isClearable={false}
-            on:select={handleSelect}
-            showIndicator={true}
-            placeholder="Kings's Cross St. Pancras"
-        />
-    </div>
-
-    {#if errorMessage}
-        <h1 id="errmsg">{@html errorMessage}</h1>
-    {:else}
-        <div class="split-even">
-            <input type="checkbox" id="lastlocation" name="lastlocation" bind:checked={saveLocation} on:change={setSaveLocation} />
-            <label for="lastlocation">Save last location?</label><br />
+        <div class="select">
+            <Select
+                items={naptanIDs}
+                bind:selectedValue={_currentNaptan}
+                on:select={handleSelect}
+                isClearable={false}
+                on:select={handleSelect}
+                showIndicator={true}
+                placeholder="Kings's Cross St. Pancras"
+            />
         </div>
 
-        {#if currentStation}
-            <div class="boards">
-                {#each Object.entries(currentStation) as line}
-                    <div class="board">
-                        <!-- Split and Join to fix the name of the waterloo and city line -->
-                        <h2 class="line-name capitalize " style="color:{getLineTextColor(line[0] || '')}; background-color: {getLineBGColor(line[0] || '')}">{line[0].split('-').join(' & ')}</h2>
-                        {#each Object.entries(line[1]) as platform}
-                            <div class="board-group">
-                                <h4 class="platform-name">{platform[0]}</h4>
-                                {#each Object.entries(platform[1].slice(0, 3)) as service}
-                                    <div class="split">
-                                        <p class="number">{parseInt(service[0]) + 1}</p>
-                                        <p class="destination">{service[1].towards}</p>
-                                        <p class="eta">{getMinutesToStation(service[1].timeToStation)}</p>
-                                    </div>
-                                {/each}
-                            </div>
-                        {/each}
-                    </div>
-                {/each}
+        {#if errorMessage}
+            <h1 id="errmsg">{@html errorMessage}</h1>
+        {:else}
+            <div class="split-even">
+                <input type="checkbox" id="lastlocation" name="lastlocation" bind:checked={saveLocation} on:change={setSaveLocation} />
+                <label for="lastlocation">Save last location?</label><br />
             </div>
+
+            {#if currentStation}
+                <div class="boards">
+                    {#each Object.entries(currentStation) as line}
+                        <div class="board">
+                            <!-- Split and Join to fix the name of the waterloo and city line -->
+                            <div class="line-name capitalize" style="color:{getLineTextColor(line[0] || '')}; background-color: {getLineBGColor(line[0] || '')}">
+                                <h2>{line[0].split('-').join(' & ')}</h2>
+                            </div>
+                            {#each Object.entries(line[1]) as platform}
+                                <div class="board-group">
+                                    <h4 class="platform-name">{platform[0]}</h4>
+                                    {#each Object.entries(platform[1].slice(0, 3)) as service}
+                                        <div class="split">
+                                            <p class="number">{parseInt(service[0]) + 1}</p>
+                                            <p class="destination">{service[1].towards}</p>
+                                            <p class="eta">{getMinutesToStation(service[1].timeToStation)}</p>
+                                        </div>
+                                    {/each}
+                                </div>
+                            {/each}
+                        </div>
+                    {/each}
+                </div>
+            {/if}
         {/if}
-    {/if}
+    </div>
 </main>
 
 <style lang="less">
     @import '../assets/css/colors.less';
     @import '../assets/css/tfl.less';
 
-    main {
+    #tube {
         height: calc(100% - 40px);
         display: flex;
         justify-content: center;
@@ -210,10 +205,14 @@
 
             .line-name {
                 text-shadow: none;
-                // font-family: 'P22 Johnston Underground', serif;
                 color: #fff;
                 text-align: center;
-                padding-top: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 26px;
+                padding-bottom: 2px;
             }
 
             .platform-name {
@@ -274,6 +273,12 @@
     @media only screen and (max-width: 600px) {
         .boards {
             flex-direction: column;
+            width: 100%;
+
+            .board {
+                min-width: 95%;
+                padding: 0;
+            }
         }
     }
 </style>
