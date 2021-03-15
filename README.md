@@ -6,6 +6,11 @@
 
 [![Issues](https://img.shields.io/github/issues/ZackaryH8/dparture-client)](https://github.com/ZackaryH8/dparture-client/issues)
 
+## Screenshots
+
+<img src="https://i.imgur.com/IdaVnCf.png" alt="drawing" width="500"/>
+<img src="https://i.imgur.com/dYRQOAE.png" alt="drawing" width="500"/>
+
 ## Contribute
 
 There are many ways to contribute to this repo.
