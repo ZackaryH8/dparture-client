@@ -1,28 +1,16 @@
-import PublicIndex from './views/public/index.svelte'
-import Tube from './views/public/tube.svelte'
-import NationalRail from './views/public/nationalRail.svelte'
-// import PublicLayout from './views/public/layout.svelte'
-// import AdminLayout from './views/admin/layout.svelte'
-// import AdminIndex from './views/admin/index.svelte'
-// import EmployeesIndex from './views/admin/employees/index.svelte'
+import PublicIndex from './routes/index.svelte'
+import Tube from './routes/tube.svelte'
+import NationalRail from './routes/nationalRail.svelte'
 
-function userIsAdmin() {
-  //check if user is admin and returns true or false
+const routes = {
+    '/': PublicIndex,
+
+    '/tube': Tube,
+
+    '/NationalRail': NationalRail,
+
+    // Catch-all
+    // This is optional, but if present it must be the last
 }
 
-const routes = [
-    {
-        name: '/',
-        component: PublicIndex,
-      },
-      {
-        name: 'tube',
-        component: Tube,
-      },
-      {
-        name: 'nationalrail',
-        component: NationalRail,
-      },
-]
-
-export { routes }
+export {routes}

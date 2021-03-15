@@ -1,9 +1,11 @@
 <script>
-    import { Router } from 'svelte-router-spa';
+    import Router from 'svelte-spa-router';
     import { routes } from './routes';
 
     import Footer from './components/footer.svelte';
 </script>
 
-<Router {routes} />
-<Footer />
+<body>
+    <Router {routes} />
+    <Footer />
+</body>

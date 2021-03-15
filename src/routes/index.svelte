@@ -1,4 +1,5 @@
 <script>
+    import { link } from 'svelte-spa-router';
 </script>
 
 <main>
@@ -7,11 +8,11 @@
         <p>all your departues in one place</p>
 
         <div class="split">
-            <a href="/nationalrail">
+            <a class="button" href="#/nationalrail">
                 <img src="img/logos/NationalRail.svg" alt="National Rail Logo" />
                 <p>National<br />Rail</p>
             </a>
-            <a href="/tube">
+            <a class="button" href="#/tube">
                 <img src="img/logos/Underground.svg" alt="London Underground Logo" />
                 <p>London<br />Underground</p>
             </a>
@@ -20,8 +21,8 @@
 </main>
 
 <style lang="less">
-    @import '../../assets/css/colors.less';
-    @import '../../assets/css/tfl.less';
+    @import '../assets/css/colors.less';
+    @import '../assets/css/tfl.less';
 
     * {
         color: #fff;
@@ -53,12 +54,13 @@
             display: flex;
             justify-content: space-evenly;
 
-            a {
+            .button {
                 padding: 10px;
                 border-radius: 5px;
+                text-decoration: none;
             }
 
-            a:hover {
+            .button:hover {
                 text-decoration: none;
                 background-color: #424242;
             }

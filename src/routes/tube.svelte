@@ -1,13 +1,21 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { colors } from '../../assets/data/tflColors';
+    import { colors } from '../assets/data/tflColors';
+    import Select from 'svelte-select';
+
+    import _naptanIDs from '../assets/data/naptan';
+    let naptanIDs = _naptanIDs;
+
+    const host = '81.151.25.43';
 
     let currentTime = new Date().toLocaleTimeString('en-GB');
+    let _currentNaptan = undefined;
     let currentNaptan: string = '940GZZLUKSX';
     let currentStation: any[];
     let saveLocation: boolean = false;
     let errorMessage: string = '';
 
+    /* Uhh... it works?*/
     const groupBy2PropertiesDesc = (arr: any[]) => {
         const mainFilter = 'lineId';
         const secFilter = 'platformName';
@@ -37,26 +45,18 @@
         return result;
     };
 
-    const updateTrainServicesByNaptan = async () => {
-        if (saveLocation) localStorage.lastLocation = currentNaptan.toUpperCase();
+    /* Fetch new data */
+    const updateTrainServicesByNaptan = async (CurrentNaptan: string) => {
         try {
-            const response = await fetch(`http://81.151.25.43:4564/api/v1/tfl/tube/listStationArrivals/${currentNaptan}`);
+            const response = await fetch(`http://${host}:4564/api/v1/tfl/tube/listStationArrivals/${CurrentNaptan}`);
             const json = await response.json();
-            // if (json.httpStatusCode === 404) return (errorMessage = 'Could not fetch data, click <a href="./">here</a> to refresh!');
             currentStation = groupBy2PropertiesDesc(json);
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
         }
     };
 
-    const getLastLocation = () => {
-        const _lastLocation: string = localStorage.lastLocation;
-        const _saveLocation: string = localStorage.saveLocation;
-
-        if (_lastLocation) currentNaptan = _lastLocation.toUpperCase();
-        if (_saveLocation) saveLocation = JSON.parse(_saveLocation.toLowerCase());
-    };
-
+    /* Round timeToStation property (seconds) to minutes */
     const getMinutesToStation = (seconds: number) => {
         const round = Math.round(seconds / 60);
         if (round === 0) return '      ';
@@ -64,24 +64,42 @@
         return `${round} Mins`;
     };
 
-    const getLineColor = (name: string): string => {
-        return colors.find((color: any) => color.name === name).hex;
+    const getLineBGColor = (name: string): string => {
+        return colors.find((color: any) => color.name === name)?.hex;
+    };
+
+    /* Handle Line Title readability */
+    const getLineTextColor = (name: string): string => {
+        if (name === 'circle' || name === 'hammersmith-city' || name === 'waterloo-city') return '#282828';
     };
 
     const setSaveLocation = (e) => {
         localStorage.saveLocation = e.target.checked;
     };
 
-    onMount(() => {
-        getLastLocation();
-        updateTrainServicesByNaptan();
+    const getLastSession = () => {
+        const _saveLocation: string = localStorage.saveLocation;
+        if (_saveLocation) saveLocation = JSON.parse(_saveLocation.toLowerCase());
+    };
 
+    function handleSelect(event: any) {
+        currentNaptan = event.detail.value;
+        if (saveLocation) localStorage.lastLocation = event.detail.value;
+        updateTrainServicesByNaptan(event.detail.value);
+    }
+
+    onMount(() => {
+        getLastSession();
+        updateTrainServicesByNaptan(currentNaptan);
+
+        /* Update clock time*/
         const currentTimeInterval = setInterval(() => {
             currentTime = new Date().toLocaleTimeString('en-GB');
         }, 1000);
 
+        /* Update the train services */
         const dataInterval = setInterval(() => {
-            updateTrainServicesByNaptan();
+            updateTrainServicesByNaptan(currentNaptan);
         }, 65000);
 
         return () => {
@@ -93,12 +111,18 @@
 
 <main>
     <h3>{currentTime}</h3>
-    <label>
-        naptanID Code
-        <br />
-        <input type="text" style="text-transform: uppercase;" bind:value={currentNaptan} required />
-        <input type="button" value="Update" on:click={updateTrainServicesByNaptan} />
-    </label>
+
+    <div class="select">
+        <Select
+            items={naptanIDs}
+            bind:selectedValue={_currentNaptan}
+            on:select={handleSelect}
+            isClearable={false}
+            on:select={handleSelect}
+            showIndicator={true}
+            placeholder="Kings's Cross St. Pancras"
+        />
+    </div>
 
     {#if errorMessage}
         <h1 id="errmsg">{@html errorMessage}</h1>
@@ -112,7 +136,8 @@
             <div class="boards">
                 {#each Object.entries(currentStation) as line}
                     <div class="board">
-                        <h2 class="line-name capitalize" style="background-color: {getLineColor(line[0]) || ''}">{line[0]}</h2>
+                        <!-- Split and Join to fix the name of the waterloo and city line -->
+                        <h2 class="line-name capitalize " style="color:{getLineTextColor(line[0] || '')}; background-color: {getLineBGColor(line[0] || '')}">{line[0].split('-').join(' & ')}</h2>
                         {#each Object.entries(line[1]) as platform}
                             <div class="board-group">
                                 <h4 class="platform-name">{platform[0]}</h4>
@@ -133,8 +158,8 @@
 </main>
 
 <style lang="less">
-    @import '../../assets/css/colors.less';
-    @import '../../assets/css/tfl.less';
+    @import '../assets/css/colors.less';
+    @import '../assets/css/tfl.less';
 
     main {
         height: calc(100% - 40px);
@@ -144,9 +169,13 @@
         flex-direction: column;
         height: max-content;
         width: 100%;
-        color: #fff;
         text-align: center;
         padding: 15px 0;
+
+        label,
+        h3 {
+            color: #fff;
+        }
     }
 
     #errmsg {
@@ -164,11 +193,11 @@
         flex-wrap: wrap;
 
         .board {
-            width: 400px;
             height: max-content;
             padding: 2px 8px;
             margin: 8px 10px;
             flex: 0 0 25%;
+            min-width: 400px;
 
             color: @orange;
             text-shadow: 1px 1px 5px @orange;
@@ -213,6 +242,23 @@
                 }
             }
         }
+    }
+
+    .split-even {
+        padding-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        input {
+            margin-right: 10px;
+        }
+    }
+
+    .select {
+        min-width: 250px;
+        margin: 10px;
     }
 
     .capitalize {

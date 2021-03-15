@@ -10,23 +10,17 @@ body {
 
 body {
     background-color: #282828;
+    /* background-image: url(https://wallpaperaccess.com/full/194796.jpg);
+    backdrop-filter: blur(5px); */
     margin: 0;
     box-sizing: border-box;
     font-family: 'P22 Johnston Underground', serif;
 }
 
 a {
-    color: rgb(0, 100, 200);
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-a:visited {
-    color: rgb(0, 80, 160);
-}
 
 label {
     display: block;
