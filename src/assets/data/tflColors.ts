@@ -65,6 +65,6 @@ export const colors = [
     },
     {
         name: 'tfl-rail',
-        hex: '#0019A8',
+        hex: '#9364cd',
     },
 ];
