@@ -1,12 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import Select from 'svelte-select';
+    import { host } from '../assets/data/globals';
     import { getLineBGColor, getLineTextColor } from '../helpers/color';
 
     import _naptanIDs from '../assets/data/naptan';
     let naptanIDs = _naptanIDs;
-
-    const host = '81.151.25.43';
 
     let currentTime = new Date().toLocaleTimeString('en-GB');
     let _currentNaptan = undefined;
