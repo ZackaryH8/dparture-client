@@ -1,11 +1,17 @@
 @import './fonts/DotMatrix/font.css';
 @import './fonts/p22/font.css';
 
+* {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
 html,
 body {
     position: relative;
     width: 100%;
     height: 100%;
+    user-select: none;
 }
 
 body {
