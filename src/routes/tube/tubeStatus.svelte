@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { host } from '../assets/data/globals';
-    import { getLineBGColor, getLineTextColor } from '../helpers/color';
+    import { host } from '../../assets/data/globals';
+    import { getLineBGColor, getLineTextColor } from '../../helpers/color';
 
     let statuses: any = undefined;
     let errorMessage: string = '';
@@ -49,8 +49,8 @@
 </main>
 
 <style lang="less">
-    @import '../assets/css/colors.less';
-    @import '../assets/css/tfl.less';
+    @import '../../assets/css/colors.less';
+    @import '../../assets/css/tfl.less';
     #status {
         height: calc(100vh - 70px);
         display: flex;

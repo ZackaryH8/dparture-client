@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import Select from 'svelte-select';
-    import { host } from '../assets/data/globals';
-    import { getLineBGColor, getLineTextColor } from '../helpers/color';
+    import { host } from '../../assets/data/globals';
+    import { getLineBGColor, getLineTextColor } from '../../helpers/color';
 
-    import _naptanIDs from '../assets/data/naptan';
+    import _naptanIDs from '../../assets/data/naptan';
     let naptanIDs = _naptanIDs;
 
     let currentTime = new Date().toLocaleTimeString('en-GB');
@@ -152,8 +152,8 @@
 </main>
 
 <style lang="less">
-    @import '../assets/css/colors.less';
-    @import '../assets/css/tfl.less';
+    @import '../../assets/css/colors.less';
+    @import '../../assets/css/tfl.less';
 
     #tube {
         height: calc(100% - 40px);

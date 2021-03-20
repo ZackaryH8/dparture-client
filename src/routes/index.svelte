@@ -12,7 +12,7 @@
                 <img src="img/logos/NationalRail.svg" alt="National Rail Logo" />
                 <p>National<br />Rail</p>
             </a>
-            <a class="button" href="#/tube">
+            <a class="button" href="#/tube/departures">
                 <img src="img/logos/Underground.svg" alt="London Underground Logo" />
                 <p>London<br />Underground</p>
             </a>
