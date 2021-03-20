@@ -1,0 +1,1 @@
+export const host = "51.195.255.123";
