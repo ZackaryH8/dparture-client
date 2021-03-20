@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { host } from '../assets/data/globals';
     import { getLineBGColor, getLineTextColor } from '../helpers/color';
 
     let statuses: any = undefined;
@@ -7,11 +8,19 @@
 
     async function getAllLineStatuses() {
         try {
-            const response = await fetch(`https://api.tfl.gov.uk/Line/Mode/tube/Status?app_key=985c2eea87a14961b317643a4bf4de60`);
-            statuses = await response.json();
+            let data: any = await fetch(`http://${host}:4564/api/v1/tfl/tube/getAllLineStatuses`);
+            statuses = await data.json();
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
         }
+    }
+
+    function getDistruptionColor(str: string = '') {
+        if (str === 'Good Service') return '#47b300';
+        if (str === 'Minor Delays') return '#ffae00';
+        if (str === 'Reduced Service' || str === 'Part Suspended') return '#db6300';
+        if (str === 'Planned Closure' || str === 'Severe Delays') return '#db2c00';
+        return '#424242';
     }
 
     onMount(() => {
@@ -27,9 +36,9 @@
                 {#each statuses as line}
                     <tr>
                         <td style="color:{getLineTextColor(line.id || '')}; background-color: {getLineBGColor(line.id || '')}">
-                            {line.name}
+                            <h4>{line.name}</h4>
                         </td>
-                        <td>
+                        <td class="distruption" style="background: linear-gradient(90deg, #424242 96%, {getDistruptionColor(line.lineStatuses[0].statusSeverityDescription)} 0);">
                             {line.lineStatuses[0].statusSeverityDescription}
                         </td>
                     </tr>
@@ -42,14 +51,12 @@
 <style lang="less">
     @import '../assets/css/colors.less';
     @import '../assets/css/tfl.less';
-
     #status {
-        height: calc(100% - 40px);
+        height: calc(100vh - 70px);
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        height: max-content;
         width: 100%;
         text-align: center;
         padding: 15px 0;
@@ -60,13 +67,22 @@
     }
 
     table {
-        width: 40%;
+        width: 30%;
         tr {
             height: 40px;
 
             td {
                 background-color: #424242;
             }
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        #status {
+            height: calc(100% - 40px);
+        }
+        table {
+            width: 90%;
         }
     }
 </style>
