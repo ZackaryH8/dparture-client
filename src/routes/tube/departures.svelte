@@ -1,51 +1,21 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import Select from 'svelte-select';
+
     import { host } from '../../assets/data/globals';
     import { getLineBGColor, getLineTextColor } from '../../helpers/color';
-
+    import { groupBy2PropertiesDesc } from '../../helpers/group';
     import _naptanIDs from '../../assets/data/naptan';
-    let naptanIDs = _naptanIDs;
 
     let currentTime = new Date().toLocaleTimeString('en-GB');
-    let _currentNaptan = undefined;
-    let currentNaptan: string = '940GZZLUKSX';
+    let currentNaptan: { value: string; label: string } = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
     let currentStation: any[];
     let saveLocation: boolean = false;
+    let naptanIDs = _naptanIDs;
     let errorMessage: string = '';
 
-    /* Uhh... it works?*/
-    const groupBy2PropertiesDesc = (arr: any[]) => {
-        const mainFilter = 'lineId';
-        const secFilter = 'platformName';
-        const result = arr.reduce(function (map, obj) {
-            let f1 = (map[obj[mainFilter]] = map[obj[mainFilter]] || {});
-
-            if (Object.prototype.toString.call(obj[secFilter]) === '[object Array]') {
-                for (let idx in obj[secFilter]) {
-                    let f2 = (f1[obj[secFilter][idx]] = f1[obj[secFilter][idx]] || []);
-                    f2.push(obj);
-                }
-            } else {
-                let f2 = (f1[obj[secFilter]] = f1[obj[secFilter]] || []);
-                f2.push(obj);
-            }
-
-            return map;
-        }, Object.create(null));
-
-        for (const key of Object.values(result)) {
-            const platforms = Object.values(key);
-            platforms.forEach((platform) => {
-                platform.sort((a, b) => a.timeToStation - b.timeToStation);
-            });
-        }
-
-        return result;
-    };
-
     /* Fetch new data */
-    const updateTrainServicesByNaptan = async (CurrentNaptan: string) => {
+    async function updateTrainServicesByNaptan(CurrentNaptan: string) {
         try {
             const response = await fetch(`http://${host}:4564/api/v1/tfl/tube/listStationArrivals/${CurrentNaptan}`);
             const json = await response.json();
@@ -53,40 +23,42 @@
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
         }
-    };
+    }
 
     /* Round timeToStation property (seconds) to minutes */
-    const getMinutesToStation = (seconds: number) => {
+    function getMinutesToStation(seconds: number) {
         const round = Math.round(seconds / 60);
         if (round === 0) return '      ';
         if (round === 1) return `${round} Min `;
         return `${round} Mins`;
-    };
+    }
 
-    const setSaveLocation = (e) => {
-        localStorage.saveLocation = e.target.checked;
-    };
-
-    const getLastSession = () => {
+    function getLocalStorageState() {
         const _saveLocation: string = localStorage.saveLocation;
-        let _lastLocation: any = localStorage.lastLocation;
-        if (_saveLocation) saveLocation = JSON.parse(_saveLocation.toLowerCase());
-        if (_lastLocation) {
-            _lastLocation = JSON.parse(_lastLocation);
-            currentNaptan = _lastLocation.value;
-            _currentNaptan = _lastLocation;
-        }
-    };
+        let _lastLocation: string = localStorage.lastLocation;
 
-    function handleSelect(event: any) {
-        currentNaptan = event.detail.value;
-        if (saveLocation) localStorage.lastLocation = JSON.stringify(event.detail);
-        updateTrainServicesByNaptan(currentNaptan);
+        if (_saveLocation) saveLocation = JSON.parse(_saveLocation.toLowerCase());
+        if (_lastLocation) currentNaptan = JSON.parse(_lastLocation);
+    }
+
+    function handleStationSelect(e) {
+        if (saveLocation) {
+            localStorage.lastLocation = JSON.stringify(currentNaptan);
+        }
+        updateTrainServicesByNaptan(currentNaptan.value);
+    }
+
+    function handleSaveLocationToggled(e: { target: { checked: boolean } }) {
+        const bool: boolean = e.target.checked;
+        localStorage.saveLocation = bool;
+        if (bool) {
+            localStorage.lastLocation = JSON.stringify(currentNaptan);
+        }
     }
 
     onMount(() => {
-        getLastSession();
-        updateTrainServicesByNaptan(currentNaptan);
+        getLocalStorageState();
+        updateTrainServicesByNaptan(currentNaptan.value);
 
         /* Update clock time*/
         const currentTimeInterval = setInterval(() => {
@@ -95,7 +67,7 @@
 
         /* Update the train services */
         const dataInterval = setInterval(() => {
-            updateTrainServicesByNaptan(currentNaptan);
+            updateTrainServicesByNaptan(currentNaptan.value);
         }, 65000);
 
         return () => {
@@ -110,14 +82,14 @@
         <h3>{currentTime}</h3>
 
         <div class="select">
-            <Select items={naptanIDs} bind:selectedValue={_currentNaptan} on:select={handleSelect} isClearable={false} showIndicator={true} placeholder="Kings's Cross St. Pancras" />
+            <Select items={naptanIDs} bind:selectedValue={currentNaptan} on:select={handleStationSelect} isClearable={false} showIndicator={true} placeholder="Kings's Cross St. Pancras" />
         </div>
 
         {#if errorMessage}
             <h1 id="errmsg">{@html errorMessage}</h1>
         {:else}
             <div class="split-even">
-                <input type="checkbox" id="lastlocation" name="lastlocation" bind:checked={saveLocation} on:change={setSaveLocation} />
+                <input type="checkbox" id="lastlocation" name="lastlocation" bind:checked={saveLocation} on:change={handleSaveLocationToggled} />
                 <label for="lastlocation">Save last location?</label><br />
             </div>
 
