@@ -17,7 +17,7 @@
     /* Fetch new data */
     async function updateTrainServicesByNaptan(CurrentNaptan: string) {
         try {
-            const response = await fetch(`http://${host}:4564/api/v1/tfl/tube/listStationArrivals/${CurrentNaptan}`);
+            const response = await fetch(`http://${host}/api/v1/tfl/tube/listStationArrivals/${CurrentNaptan}`);
             const json = await response.json();
             currentStation = groupBy2PropertiesDesc(json);
         } catch (e) {

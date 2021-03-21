@@ -1,1 +1,1 @@
-export const host = "51.195.255.123";
+export const host = "api.dparture.cc";

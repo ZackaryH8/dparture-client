@@ -8,7 +8,7 @@
 
     async function getAllLineStatuses() {
         try {
-            let data: any = await fetch(`http://${host}:4564/api/v1/tfl/tube/getAllLineStatuses`);
+            let data: any = await fetch(`http://${host}/api/v1/tfl/tube/getAllLineStatuses`);
             statuses = await data.json();
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
