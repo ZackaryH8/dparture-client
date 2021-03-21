@@ -1,7 +1,11 @@
 import PublicIndex from './routes/index.svelte'
+
+// National Rail
 import NationalRail from './routes/nationalRail.svelte'
-import Tube from './routes/tube/tube.svelte'
-import TubeStatus from './routes/tube/tubeStatus.svelte'
+
+// Tube
+import TubeDepartures from './routes/tube/departures.svelte'
+import TubeStatus from './routes/tube/status.svelte'
 
 const routes = {
     '/': PublicIndex,
@@ -9,7 +13,7 @@ const routes = {
 
     '/NationalRail': NationalRail,
 
-    '/tube/departures': Tube,
+    '/tube/departures': TubeDepartures,
     '/tube/status': TubeStatus,
 
     // Catch-all
