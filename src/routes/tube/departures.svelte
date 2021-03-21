@@ -81,7 +81,7 @@
     function handleSelect(event: any) {
         currentNaptan = event.detail.value;
         if (saveLocation) localStorage.lastLocation = JSON.stringify(event.detail);
-        updateTrainServicesByNaptan(event.detail.value);
+        updateTrainServicesByNaptan(currentNaptan);
     }
 
     onMount(() => {
