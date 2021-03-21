@@ -17,7 +17,7 @@
                         showNRChild = true;
                     }}
                 >
-                    <img src="img/logos/NationalRail.svg" alt="National Rail Logo" />
+                    <img src="img/logos/NationalRail.svg" alt="National Rail Logo" draggable="false" />
                     <p>National<br />Rail</p>
                 </div>
                 <div
@@ -27,18 +27,18 @@
                         showNRChild = false;
                     }}
                 >
-                    <img src="img/logos/Underground.svg" alt="London Underground Logo" />
+                    <img src="img/logos/Underground.svg" alt="London Underground Logo" draggable="false" />
                     <p>London<br />Underground</p>
                 </div>
             </div>
         {:else if showTubeChild}
             <div class="split">
                 <a class="button" href="#/tube/departures">
-                    <img src="https://via.placeholder.com/150" alt="National Rail Logo" />
+                    <img src="https://via.placeholder.com/150" alt="National Rail Logo" draggable="false" />
                     <p>Departures</p>
                 </a>
                 <a class="button" href="#/tube/status">
-                    <img src="https://via.placeholder.com/150" alt="London Underground Logo" />
+                    <img src="https://via.placeholder.com/150" alt="London Underground Logo" draggable="false" />
                     <p>Line Status</p>
                 </a>
             </div>
@@ -54,11 +54,11 @@
         {:else if showNRChild}
             <div class="split">
                 <a class="button" href="#/nationalrail">
-                    <img src="https://via.placeholder.com/150" alt="National Rail Logo" />
+                    <img src="https://via.placeholder.com/150" alt="National Rail Logo" draggable="false" />
                     <p>Departures</p>
                 </a>
                 <a class="button" href="#/tube/departures">
-                    <img src="https://via.placeholder.com/150" alt="London Underground Logo" />
+                    <img src="https://via.placeholder.com/150" alt="London Underground Logo" draggable="false" />
                     <p>Line Status</p>
                 </a>
             </div>
