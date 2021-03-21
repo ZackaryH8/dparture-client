@@ -10,7 +10,6 @@ import TubeStatus from './routes/tube/status.svelte'
 const routes = {
     '/': PublicIndex,
 
-
     '/NationalRail': NationalRail,
 
     '/tube/departures': TubeDepartures,
