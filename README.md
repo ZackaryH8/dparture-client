@@ -1,6 +1,6 @@
 <p align="center">
     <h1 align="center">dparture Client</h1>
-    <p align="center">Frontend for dparture.cc</p>
+    <p align="center">Frontend for <a href="http://dparture.cc/">dparture.cc</a></p>
 </p>
 
 
