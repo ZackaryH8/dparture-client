@@ -1,5 +1,6 @@
-<script>
-    import { link } from 'svelte-spa-router';
+<script lang="ts">
+    let showTubeChild: boolean = false;
+    let showNRChild: boolean = false;
 </script>
 
 <main>
@@ -7,16 +8,70 @@
         <h1>dparture</h1>
         <p>all your departues in one place</p>
 
-        <div class="split">
-            <a class="button" href="#/nationalrail">
-                <img src="img/logos/NationalRail.svg" alt="National Rail Logo" />
-                <p>National<br />Rail</p>
-            </a>
-            <a class="button" href="#/tube/departures">
-                <img src="img/logos/Underground.svg" alt="London Underground Logo" />
-                <p>London<br />Underground</p>
-            </a>
-        </div>
+        {#if !showTubeChild && !showNRChild}
+            <div class="split">
+                <div
+                    class="button"
+                    on:click={() => {
+                        showTubeChild = false;
+                        showNRChild = true;
+                    }}
+                >
+                    <img src="img/logos/NationalRail.svg" alt="National Rail Logo" />
+                    <p>National<br />Rail</p>
+                </div>
+                <div
+                    class="button"
+                    on:click={() => {
+                        showTubeChild = true;
+                        showNRChild = false;
+                    }}
+                >
+                    <img src="img/logos/Underground.svg" alt="London Underground Logo" />
+                    <p>London<br />Underground</p>
+                </div>
+            </div>
+        {:else if showTubeChild}
+            <div class="split">
+                <a class="button" href="#/tube/departures">
+                    <img src="https://via.placeholder.com/150" alt="National Rail Logo" />
+                    <p>Departures</p>
+                </a>
+                <a class="button" href="#/tube/status">
+                    <img src="https://via.placeholder.com/150" alt="London Underground Logo" />
+                    <p>Line Status</p>
+                </a>
+            </div>
+            <div
+                class="button"
+                on:click={() => {
+                    showTubeChild = false;
+                    showNRChild = false;
+                }}
+            >
+                Go Back
+            </div>
+        {:else if showNRChild}
+            <div class="split">
+                <a class="button" href="#/nationalrail">
+                    <img src="https://via.placeholder.com/150" alt="National Rail Logo" />
+                    <p>Departures</p>
+                </a>
+                <a class="button" href="#/tube/departures">
+                    <img src="https://via.placeholder.com/150" alt="London Underground Logo" />
+                    <p>Line Status</p>
+                </a>
+            </div>
+            <div
+                class="button"
+                on:click={() => {
+                    showTubeChild = false;
+                    showNRChild = false;
+                }}
+            >
+                Go Back
+            </div>
+        {/if}
     </div>
 </main>
 
@@ -54,17 +109,6 @@
             display: flex;
             justify-content: space-evenly;
 
-            .button {
-                padding: 10px;
-                border-radius: 5px;
-                text-decoration: none;
-            }
-
-            .button:hover {
-                text-decoration: none;
-                background-color: #424242;
-            }
-
             img {
                 height: 100px;
             }
@@ -74,6 +118,18 @@
                 margin-top: 5px;
             }
         }
+    }
+
+    .button {
+        padding: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        text-decoration: none;
+        background-color: #424242;
     }
 
     @media only screen and (max-width: 600px) {
