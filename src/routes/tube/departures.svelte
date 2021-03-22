@@ -8,10 +8,10 @@
     import { getLineBGColor, getLineTextColor } from '../../helpers/color';
     import { groupBy2PropertiesDesc } from '../../helpers/group';
 
-    import type { listStationArrivals } from  '../../interfaces/listStationArrivals'
-    import type naptanID from '../../interfaces/naptanID'
+    import type { listStationArrivals } from '../../interfaces/listStationArrivals';
+    import type naptanID from '../../interfaces/naptanID';
 
-    let currentTime: Date = new Date().toLocaleTimeString('en-GB');
+    let currentTime: string = new Date().toLocaleTimeString('en-GB');
     let currentNaptan: naptanID = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
     let currentStation: listStationArrivals.Root[];
     let saveLocation: boolean = false;
