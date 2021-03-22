@@ -3,15 +3,19 @@
     import Select from 'svelte-select';
 
     import { host } from '../../assets/data/globals';
-    import { getLineBGColor, getLineTextColor } from '../../helpers/color';
-    import { groupBy2PropertiesDesc } from '../../helpers/group';
     import _naptanIDs from '../../assets/data/naptan';
 
-    let currentTime = new Date().toLocaleTimeString('en-GB');
-    let currentNaptan: { value: string; label: string } = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
-    let currentStation: any[];
+    import { getLineBGColor, getLineTextColor } from '../../helpers/color';
+    import { groupBy2PropertiesDesc } from '../../helpers/group';
+
+    import type { listStationArrivals } from  '../../interfaces/listStationArrivals'
+    import type naptanID from '../../interfaces/naptanID'
+
+    let currentTime: Date = new Date().toLocaleTimeString('en-GB');
+    let currentNaptan: naptanID = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
+    let currentStation: listStationArrivals.Root[];
     let saveLocation: boolean = false;
-    let naptanIDs = _naptanIDs;
+    let naptanIDs: naptanID[] = _naptanIDs;
     let errorMessage: string = '';
 
     /* Fetch new data */
