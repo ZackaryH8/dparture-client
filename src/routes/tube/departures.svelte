@@ -45,19 +45,15 @@
         if (_lastLocation) currentNaptan = JSON.parse(_lastLocation);
     }
 
-    function handleStationSelect(e) {
-        if (saveLocation) {
-            localStorage.lastLocation = JSON.stringify(currentNaptan);
-        }
+    function handleStationSelect() {
+        if (saveLocation) localStorage.lastLocation = JSON.stringify(currentNaptan);
         updateTrainServicesByNaptan(currentNaptan.value);
     }
 
     function handleSaveLocationToggled(e: { target: { checked: boolean } }) {
         const bool: boolean = e.target.checked;
         localStorage.saveLocation = bool;
-        if (bool) {
-            localStorage.lastLocation = JSON.stringify(currentNaptan);
-        }
+        if (bool) localStorage.lastLocation = JSON.stringify(currentNaptan);
     }
 
     onMount(() => {
