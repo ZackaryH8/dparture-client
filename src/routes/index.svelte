@@ -53,7 +53,7 @@
             </div>
         {:else if showNRChild}
             <div class="split">
-                <a class="button" href="#/nationalrail">
+                <a class="button" href="#/nr/departures">
                     <img src="https://via.placeholder.com/150" alt="National Rail Logo" draggable="false" />
                     <p>Departures</p>
                 </a>
