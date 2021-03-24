@@ -27,7 +27,6 @@ a {
     text-decoration: none;
 }
 
-
 label {
     display: block;
 }
@@ -44,6 +43,11 @@ textarea {
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 2px;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
 }
 
 input:disabled {
