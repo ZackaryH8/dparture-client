@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { host } from '../../assets/data/globals';
-    import { getLineBGColor, getLineTextColor } from '../../helpers/color';
+    import { getLineBGColor, getLineTextColor, getDistruptionColor } from '../../helpers/color';
 
     let statuses: any = undefined;
     let errorMessage: string = '';
@@ -13,14 +13,6 @@
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
         }
-    }
-
-    function getDistruptionColor(str: string = '') {
-        if (str === 'Good Service') return '#47b300';
-        if (str === 'Minor Delays') return '#ffae00';
-        if (str === 'Reduced Service' || str === 'Part Suspended') return '#db6300';
-        if (str === 'Planned Closure' || str === 'Severe Delays' || str === 'Part Closure' || str === 'Service Closed') return '#db2c00';
-        return '#424242';
     }
 
     onMount(() => {
