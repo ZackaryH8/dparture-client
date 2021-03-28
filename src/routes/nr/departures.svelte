@@ -8,7 +8,7 @@
     let currentTime: string = new Date().toLocaleTimeString('en-GB');
     let errorMessage: string = '';
     let currentStation: NRData.CurrentStation;
-    let crs: string = 'PBO';
+    let crs: string = 'KGX';
     let showPlatform: boolean = false;
 
     async function updateTrainServicesByCRS(crs: string) {
@@ -55,7 +55,7 @@
 
         const pageInterval = setInterval(() => {
             showPlatform = !showPlatform;
-            currentStation.trainServices.forEach((service: NRData.TrainService) => {
+            currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
                 if (service.currentPage !== service.totalPages) {
                     service.currentPage++;
                     currentStation = currentStation;
@@ -214,5 +214,20 @@
     }
     .right-align {
         float: right;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .boards {
+            height: 530px;
+            display: flex;
+            overflow-x: auto;
+            flex-wrap: initial;
+            justify-content: initial;
+        }
+
+        .board {
+            flex-shrink: 0;
+            height: initial;
+        }
     }
 </style>
