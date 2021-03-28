@@ -3,12 +3,14 @@
     import { host } from '../../assets/data/globals';
     import { getLineBGColor, getLineTextColor, getDistruptionColor } from '../../helpers/color';
 
-    let statuses: any = undefined;
+    import type IGetAllLineStatuses from '../../interfaces/getAllLineStatus';
+
+    let statuses: IGetAllLineStatuses[] = undefined;
     let errorMessage: string = '';
 
     async function getAllLineStatuses() {
         try {
-            let data: any = await fetch(`https://${host}/api/v1/tfl/tube/getAllLineStatuses`);
+            const data = await fetch(`https://${host}/api/v1/tfl/tube/getAllLineStatuses`);
             statuses = await data.json();
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';

@@ -8,19 +8,20 @@
     let currentTime: string = new Date().toLocaleTimeString('en-GB');
     let errorMessage: string = '';
     let currentStation: NRData.CurrentStation;
-    let crs: string = 'KGX';
+    let crs: string = 'PBO';
     let showPlatform: boolean = false;
+    let showCPTimes: boolean = false;
 
     async function updateTrainServicesByCRS(crs: string) {
         try {
             const response = await fetch(`https://${host}/api/v1/nr/getDepartureBoardWithDetails/${crs}`);
             const json = await response.json();
             currentStation = json;
-            currentStation.trainServices.forEach((service: NRData.TrainService) => {
+            currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
                 service.currentPage = 1;
                 service.totalPages = getTotalPages(service.subsequentCallingPoints, 12);
 
-                const lastCp = service.subsequentCallingPoints[service.subsequentCallingPoints.length - 1];
+                const lastCp = service?.subsequentCallingPoints[service.subsequentCallingPoints.length - 1];
                 if (service.subsequentCallingPoints.length <= 1) {
                     lastCp.locationName = `${lastCp.locationName} only.`;
                 } else {
@@ -83,6 +84,11 @@
             <button on:click={() => updateTrainServicesByCRS(crs)}>Update</button>
         </div>
 
+        <div class="split-even">
+            <input type="checkbox" id="showCP" name="showCP" bind:checked={showCPTimes} />
+            <label for="showCP">Calling Point Times?</label><br />
+        </div>
+
         {#if currentStation?.trainServices?.length >= 1}
             <div class="boards">
                 {#each currentStation.trainServices as service}
@@ -101,6 +107,9 @@
                             {#each paginate(service.subsequentCallingPoints, 12, service.currentPage) as cp}
                                 <p>
                                     {cp.locationName}
+                                    {#if showCPTimes}
+                                        ({cp.st})
+                                    {/if}
                                 </p>
                             {/each}
                         </div>
@@ -123,11 +132,9 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        // height: max-content;
         width: 100%;
         text-align: center;
-        padding: 15px 0;
-
+        padding: 15px 0 0 0;
         label,
         h3 {
             color: #fff;
@@ -144,6 +151,18 @@
         text-align: left;
         user-select: none;
         vertical-align: center;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+            height: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 3px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
     }
     .split-even {
         padding-bottom: 10px;
@@ -218,16 +237,24 @@
 
     @media only screen and (max-width: 600px) {
         .boards {
+            width: 300px;
             height: 530px;
             display: flex;
             overflow-x: auto;
-            flex-wrap: initial;
+            display: flex;
             justify-content: initial;
+            flex-wrap: initial;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .board {
+            width: 90%;
             flex-shrink: 0;
-            height: initial;
+            height: 95%;
+            margin: 0;
+            scroll-snap-align: start;
         }
     }
 </style>

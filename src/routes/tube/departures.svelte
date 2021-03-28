@@ -8,12 +8,11 @@
     import { getLineBGColor, getLineTextColor } from '../../helpers/color';
     import { groupBy2PropertiesDesc } from '../../helpers/group';
 
-    import type { listStationArrivals } from '../../interfaces/listStationArrivals';
     import type naptanID from '../../interfaces/naptanID';
 
     let currentTime: string = new Date().toLocaleTimeString('en-GB');
     let currentNaptan: naptanID = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
-    let currentStation: listStationArrivals.Root[];
+    let currentStation = [];
     let saveLocation: boolean = false;
     let naptanIDs: naptanID[] = _naptanIDs;
     let errorMessage: string = '';
@@ -24,6 +23,7 @@
             const response = await fetch(`https://${host}/api/v1/tfl/tube/listStationArrivals/${CurrentNaptan}`);
             const json = await response.json();
             currentStation = groupBy2PropertiesDesc(json);
+            console.log(JSON.stringify(currentStation));
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
         }
@@ -89,7 +89,15 @@
             <h1 id="errmsg">{@html errorMessage}</h1>
         {:else}
             <div class="split-even">
-                <input type="checkbox" id="lastlocation" name="lastlocation" bind:checked={saveLocation} on:change={handleSaveLocationToggled} />
+                <input
+                    type="checkbox"
+                    id="lastlocation"
+                    name="lastlocation"
+                    bind:checked={saveLocation}
+                    on:change={() => {
+                        handleSaveLocationToggled;
+                    }}
+                />
                 <label for="lastlocation">Save last location?</label><br />
             </div>
 

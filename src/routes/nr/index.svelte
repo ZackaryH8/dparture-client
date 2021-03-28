@@ -5,23 +5,30 @@
     <div id="main-container">
         <h1>dparture</h1>
         <p>all your departues in one place</p>
-
         <div class="split">
+            <a class="button" href="#/nr/departures">
+                <img src="https://via.placeholder.com/150" alt="National Rail Logo" draggable="false" />
+                <p>Departures</p>
+            </a>
             <a class="button" href="#/nr">
-                <img src="img/logos/NationalRail.svg" alt="National Rail Logo" draggable="false" />
-                <p>National<br />Rail</p>
+                <img src="https://via.placeholder.com/150" alt="London Underground Logo" draggable="false" />
+                <p>Line Status</p>
             </a>
-            <a class="button" href="#/tube">
-                <img src="img/logos/Underground.svg" alt="London Underground Logo" draggable="false" />
-                <p>London<br />Underground</p>
-            </a>
+        </div>
+        <div
+            class="button"
+            on:click={() => {
+                window.history.back();
+            }}
+        >
+            Go Back
         </div>
     </div>
 </main>
 
 <style lang="less">
-    @import '../assets/css/colors.less';
-    @import '../assets/css/tfl.less';
+    @import '../../assets/css/colors.less';
+    @import '../../assets/css/tfl.less';
 
     * {
         color: #fff;
