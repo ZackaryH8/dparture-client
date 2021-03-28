@@ -14,5 +14,6 @@
         justify-content: center;
         align-items: center;
         font-size: medium;
+        text-align: center;
     }
 </style>
