@@ -9,10 +9,11 @@
     import { groupBy2PropertiesDesc } from '../../helpers/group';
 
     import type naptanID from '../../interfaces/naptanID';
+    import type IlistStationArrivals from '../../interfaces/listStationArrivals';
 
     let currentTime: string = new Date().toLocaleTimeString('en-GB');
     let currentNaptan: naptanID = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
-    let currentStation = [];
+    let currentStation: IlistStationArrivals;
     let saveLocation: boolean = false;
     let naptanIDs: naptanID[] = _naptanIDs;
     let errorMessage: string = '';
@@ -23,7 +24,6 @@
             const response = await fetch(`https://${host}/api/v1/tfl/tube/listStationArrivals/${CurrentNaptan}`);
             const json = await response.json();
             currentStation = groupBy2PropertiesDesc(json);
-            console.log(JSON.stringify(currentStation));
         } catch (e) {
             errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
         }
