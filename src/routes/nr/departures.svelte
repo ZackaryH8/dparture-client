@@ -15,8 +15,7 @@
     async function updateTrainServicesByCRS(crs: string) {
         try {
             const response = await fetch(`https://${host}/api/v1/nr/getDepartureBoardWithDetails/${crs}`);
-            const json = await response.json();
-            currentStation = json;
+            currentStation = await response.json();
             currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
                 service.currentPage = 1;
                 service.totalPages = getTotalPages(service.subsequentCallingPoints, 12);
