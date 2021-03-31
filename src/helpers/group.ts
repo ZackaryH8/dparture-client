@@ -26,4 +26,4 @@ export function groupBy2PropertiesDesc(arr: any[]) {
     }
 
     return result;
-};
+}
