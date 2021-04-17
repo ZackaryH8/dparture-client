@@ -64,7 +64,7 @@ export default {
         }),
         commonjs(),
         typescript({
-            sourceMap: true,
+            sourceMap: false,
             inlineSources: !production,
         }),
 

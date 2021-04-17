@@ -1,11 +1,11 @@
-<script>
-    import Router from 'svelte-spa-router';
-    import { routes } from './routes';
-
-    import Footer from './components/footer.svelte';
-</script>
-
 <body>
-    <Router {routes} />
+    <Router routes="{routes}" />
     <Footer />
 </body>
+
+<script>
+import Router from 'svelte-spa-router';
+import { routes } from './routes';
+
+import Footer from './components/footer.svelte';
+</script>
