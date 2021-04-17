@@ -21,7 +21,7 @@
         <h3>{currentTime}</h3>
 
         <div class="select">
-            <Select items="{naptanIDs}" bind:selectedValue="{currentNaptan}" on:select="{handleStationSelect}" isClearable="{false}" showIndicator="{true}" placeholder="Kings's Cross St. Pancras" style="color: #000;" />
+            <Select items="{naptanIDs}" bind:selectedValue="{currentNaptan}" on:select="{handleStationSelect}" isClearable="{false}" showIndicator="{true}" placeholder="Kings's Cross St. Pancras" />
         </div>
 
         {#if errorMessage}
