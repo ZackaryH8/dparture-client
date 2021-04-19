@@ -1,10 +1,17 @@
 <main>
     <div id="nr">
-        <h3>{currentTime}</h3>
+        <Clock/>
         <br />
         <div class="split-even">
             <label>
-                <input type="text" placeholder="PBO" bind:value="{crs}" maxlength="3" on:keypress="{() => updateTrainServicesByCRS(crs)}" />
+                <input
+                    type="text"
+                    placeholder="PBO"
+                    bind:value="{crs}"
+                    maxlength="3"
+                    on:keypress="{(e) => {
+                        if (e.code === 'Enter') updateTrainServicesByCRS(crs);
+                    }}" />
             </label>
             <button on:click="{() => updateTrainServicesByCRS(crs)}">Update</button>
         </div>
@@ -25,203 +32,211 @@
 </main>
 
 <script lang="ts">
-import { onMount } from 'svelte';
-import type * as NRData from '../../interfaces/NRData';
+    import { onMount } from 'svelte';
+    import { parse } from 'qs';
+    import { querystring } from 'svelte-spa-router';
+    import type * as NRData from '../../interfaces/NRData';
 
-import { host } from '../../assets/data/globals';
+    import { host } from '../../assets/data/globals';
 
-let currentTime: string = new Date().toLocaleTimeString('en-GB');
-let errorMessage: string = '';
-let currentStation: NRData.CurrentStation;
-let crs: string = 'PBO';
-let showPlatform: boolean = false;
-let showCPTimes: boolean = false;
-
-async function updateTrainServicesByCRS(crs: string) {
-    try {
-        const response = await fetch(`https://${host}/api/v1/nr/getDepartureBoardWithDetails/${crs}`);
-        currentStation = await response.json();
-        currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
-            service.currentPage = 1;
-            service.totalPages = getTotalPages(service.subsequentCallingPoints, 12);
-
-            const lastCp = service?.subsequentCallingPoints[service.subsequentCallingPoints.length - 1];
-            if (service.subsequentCallingPoints.length <= 1) {
-                lastCp.locationName = `${lastCp.locationName} only.`;
-            } else {
-                lastCp.locationName = `& ${lastCp.locationName}.`;
-            }
-        });
-    } catch (e) {
-        errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
+    let errorMessage: string = '';
+    let currentStation: NRData.CurrentStation;
+    let lastCrs: string = '';
+    let crs = parse($querystring).crs?.toUpperCase() || 'PBO';
+    $: if (crs && crs.length === 3) {
+        updateTrainServicesByCRS(crs);
     }
-}
-function getTotalPages(array: NRData.SubsequentCallingPoint[], pageSize: number): number {
-    return Math.ceil(array.length / pageSize);
-}
 
-onMount(() => {
-    updateTrainServicesByCRS(crs);
-    /* Update clock time*/
-    const currentTimeInterval = setInterval(() => {
-        currentTime = new Date().toLocaleTimeString('en-GB');
-    }, 1000);
+    let showPlatform: boolean = false;
+    let showCPTimes: boolean = false;
 
-    const pageInterval = setInterval(() => {
-        showPlatform = !showPlatform;
-        currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
-            if (service.currentPage !== service.totalPages) {
-                service.currentPage++;
-                currentStation = currentStation;
-            } else {
-                service.currentPage = 1;
-                currentStation = currentStation;
+    async function updateTrainServicesByCRS(crs: string) {
+        if (crs !== lastCrs) {
+            lastCrs = crs;
+            try {
+                const response = await fetch(`https://${host}/api/v1/nr/getDepartureBoardWithDetails/${crs}`);
+                currentStation = await response.json();
+                currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
+                    service.currentPage = 1;
+                    service.totalPages = getTotalPages(service.subsequentCallingPoints, 12);
+
+                    const lastCp = service?.subsequentCallingPoints[service.subsequentCallingPoints.length - 1];
+                    if (service.subsequentCallingPoints.length <= 1) {
+                        lastCp.locationName = `${lastCp.locationName} only.`;
+                    } else {
+                        lastCp.locationName = `& ${lastCp.locationName}.`;
+                    }
+                });
+            } catch (e) {
+                errorMessage = 'Could not fetch data, click <a href="/">here</a> to refresh!';
             }
-        });
-    }, 5000);
+        }
+    }
 
-    /* Update the train services */
-    return () => {
-        clearInterval(currentTimeInterval);
-        clearInterval(pageInterval);
-    };
-});
+    function getTotalPages(array: NRData.SubsequentCallingPoint[], pageSize: number): number {
+        return Math.ceil(array.length / pageSize);
+    }
 
-import NationalRail from '../../components/boards/NationalRail.svelte';
+    onMount(() => {
+        // if(urlCRS) crs = urlCRS.crs.toUpperCase()
+
+        updateTrainServicesByCRS(crs);
+
+        const pageInterval = setInterval(() => {
+            showPlatform = !showPlatform;
+            currentStation?.trainServices?.forEach((service: NRData.TrainService) => {
+                if (service.currentPage !== service.totalPages) {
+                    service.currentPage++;
+                    currentStation = currentStation;
+                } else {
+                    service.currentPage = 1;
+                    currentStation = currentStation;
+                }
+            });
+        }, 5000);
+
+        /* Update the train services */
+        return () => {
+            clearInterval(pageInterval);
+        };
+    });
+
+    import NationalRail from '../../components/boards/NationalRail.svelte';
+    import Clock from '../../components/common/clock.svelte';
 </script>
 
 <style lang="less">
-@import '../../assets/css/colors.less';
-@import '../../assets/css/tfl.less';
+    @import '../../assets/css/colors.less';
+    @import '../../assets/css/tfl.less';
 
-#nr {
-    height: calc(100% - 40px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    padding: 15px 0 0 0;
-    label,
-    h3 {
-        color: #fff;
-    }
-}
-
-.boards {
-    font-family: 'Dot Matrix', serif;
-    margin: 10px auto;
-    width: 80%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    text-align: left;
-    user-select: none;
-    vertical-align: center;
-
-    &::-webkit-scrollbar {
-        width: 10px;
-        height: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: #4a4a4a;
-        border-radius: 3px;
-    }
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-}
-.split-even {
-    padding-bottom: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    input {
-        margin-right: 10px;
-    }
-}
-
-.board {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    padding: 5px 15px;
-    background-color: @dark-grey !important;
-    color: @orange;
-    text-shadow: 1px 1px 5px @orange;
-
-    width: 220px;
-    height: 450px;
-    text-align: left;
-    vertical-align: center;
-
-    .split {
+    #nr {
+        height: calc(100% - 40px);
         display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
-        font-size: larger;
-        background-color: #211e0f;
-        padding: 1px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        padding: 15px 0 0 0;
+        label,
+        h3 {
+            color: #fff;
+        }
     }
 
-    .destination {
-        font-size: large;
-        background-color: #211e0f;
-        margin: 5px 0;
-        padding: 1px;
+    .boards {
+        font-family: 'Dot Matrix', serif;
+        margin: 10px auto;
+        width: 80%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        text-align: left;
+        user-select: none;
+        vertical-align: center;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+            height: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 3px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    }
+    .split-even {
+        padding-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        input {
+            margin-right: 10px;
+        }
     }
 
-    .callingAt {
-        background-color: #211e0f;
-        margin: 5px 0;
-        padding: 1px;
-    }
-    .callingPoints {
-        margin-top: 2px;
+    .board {
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        padding: 5px 15px;
+        background-color: @dark-grey !important;
+        color: @orange;
+        text-shadow: 1px 1px 5px @orange;
 
-        p {
+        width: 220px;
+        height: 450px;
+        text-align: left;
+        vertical-align: center;
+
+        .split {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: larger;
+            background-color: #211e0f;
+            padding: 1px;
+        }
+
+        .destination {
+            font-size: large;
             background-color: #211e0f;
             margin: 5px 0;
             padding: 1px;
         }
-    }
-    .toc {
-        background-color: #211e0f;
-        padding: 1px;
-        margin-bottom: 10px;
-        font-size: larger;
-    }
-}
 
-.bottom-align {
-    margin-top: auto;
-}
-.right-align {
-    float: right;
-}
+        .callingAt {
+            background-color: #211e0f;
+            margin: 5px 0;
+            padding: 1px;
+        }
+        .callingPoints {
+            margin-top: 2px;
 
-@media only screen and (max-width: 600px) {
-    .boards {
-        width: 300px;
-        height: 530px;
-        display: flex;
-        overflow-x: auto;
-        justify-content: initial;
-        flex-wrap: initial;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
+            p {
+                background-color: #211e0f;
+                margin: 5px 0;
+                padding: 1px;
+            }
+        }
+        .toc {
+            background-color: #211e0f;
+            padding: 1px;
+            margin-bottom: 10px;
+            font-size: larger;
+        }
     }
 
-    .board {
-        width: 90%;
-        flex-shrink: 0;
-        height: 95%;
-        // margin: 0;
-        scroll-snap-align: start;
+    .bottom-align {
+        margin-top: auto;
     }
-}
+    .right-align {
+        float: right;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .boards {
+            width: 300px;
+            height: 530px;
+            display: flex;
+            overflow-x: auto;
+            justify-content: initial;
+            flex-wrap: initial;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .board {
+            width: 90%;
+            flex-shrink: 0;
+            height: 95%;
+            // margin: 0;
+            scroll-snap-align: start;
+        }
+    }
 </style>
