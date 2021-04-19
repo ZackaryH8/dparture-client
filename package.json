@@ -5,7 +5,8 @@
     "scripts": {
         "build": "rollup -c",
         "dev": "rollup -c -w",
-        "start": "sirv public -s --host 0.0.0.0"
+        "start": "sirv public -s --host 0.0.0.0",
+        "prettier": "prettier --write --plugin-search-dir=. ./**/*.svelte"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^17.0.0",
