@@ -26,85 +26,85 @@
 {/if}
 
 <script lang="ts">
-import { paginate } from '../../helpers/paginate';
-import { getOperatorName } from '../../helpers/operatorCode';
-import type * as NRData from '../../interfaces/NRData';
+    import { paginate } from '../../helpers/paginate';
+    import { getOperatorName } from '../../helpers/operatorCode';
+    import type * as NRData from '../../interfaces/NRData';
 
-export let service: NRData.TrainService | undefined = undefined;
-export let showPlatform: boolean = false;
-export let showCPTimes: boolean = false;
+    export let service: NRData.TrainService | undefined = undefined;
+    export let showPlatform: boolean = false;
+    export let showCPTimes: boolean = false;
 </script>
 
 <style lang="less">
-@import '../../assets/css/colors.less';
-@import '../../assets/css/tfl.less';
+    @import '../../assets/css/colors.less';
+    @import '../../assets/css/tfl.less';
 
-.board {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    padding: 5px 15px;
-    background-color: @dark-grey !important;
-    color: @orange;
-    text-shadow: 1px 1px 5px @orange;
-
-    width: 220px;
-    height: 450px;
-    text-align: left;
-    vertical-align: center;
-
-    .split {
+    .board {
         display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
-        font-size: larger;
-        background-color: #211e0f;
-        padding: 1px;
-    }
+        flex-direction: column;
+        margin: 5px;
+        padding: 5px 15px;
+        background-color: @dark-grey !important;
+        color: @orange;
+        text-shadow: 1px 1px 5px @orange;
 
-    .destination {
-        font-size: large;
-        background-color: #211e0f;
-        margin: 5px 0;
-        padding: 1px;
-    }
+        width: 220px;
+        height: 450px;
+        text-align: left;
+        vertical-align: center;
 
-    .callingAt {
-        background-color: #211e0f;
-        margin: 5px 0;
-        padding: 1px;
-    }
-    .callingPoints {
-        margin-top: 2px;
+        .split {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: larger;
+            background-color: #211e0f;
+            padding: 1px;
+        }
 
-        p {
+        .destination {
+            font-size: large;
             background-color: #211e0f;
             margin: 5px 0;
             padding: 1px;
         }
-    }
-    .toc {
-        background-color: #211e0f;
-        padding: 1px;
-        margin-bottom: 10px;
-        font-size: larger;
-    }
-}
 
-.bottom-align {
-    margin-top: auto;
-}
-.right-align {
-    float: right;
-}
+        .callingAt {
+            background-color: #211e0f;
+            margin: 5px 0;
+            padding: 1px;
+        }
+        .callingPoints {
+            margin-top: 2px;
 
-@media only screen and (max-width: 600px) {
-    .board {
-        width: 90%;
-        flex-shrink: 0;
-        height: 95%;
-        // margin: 0;
-        scroll-snap-align: start;
+            p {
+                background-color: #211e0f;
+                margin: 5px 0;
+                padding: 1px;
+            }
+        }
+        .toc {
+            background-color: #211e0f;
+            padding: 1px;
+            margin-bottom: 10px;
+            font-size: larger;
+        }
     }
-}
+
+    .bottom-align {
+        margin-top: auto;
+    }
+    .right-align {
+        float: right;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .board {
+            width: 90%;
+            flex-shrink: 0;
+            height: 95%;
+            // margin: 0;
+            scroll-snap-align: start;
+        }
+    }
 </style>
