@@ -42,7 +42,7 @@
     let errorMessage: string = '';
     let currentStation: NRData.CurrentStation;
     let lastCrs: string = '';
-    let crs = parse($querystring).crs?.toUpperCase() || 'PBO';
+    $: crs = parse($querystring).crs?.toUpperCase() || 'PBO';
     $: if (crs && crs.length === 3) {
         updateTrainServicesByCRS(crs);
     }
@@ -117,9 +117,7 @@
         flex-direction: column;
         width: 100%;
         text-align: center;
-        padding: 15px 0 0 0;
-        label,
-        h3 {
+        label {
             color: #fff;
         }
     }
@@ -159,65 +157,6 @@
         }
     }
 
-    .board {
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        padding: 5px 15px;
-        background-color: @dark-grey !important;
-        color: @orange;
-        text-shadow: 1px 1px 5px @orange;
-
-        width: 220px;
-        height: 450px;
-        text-align: left;
-        vertical-align: center;
-
-        .split {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: larger;
-            background-color: #211e0f;
-            padding: 1px;
-        }
-
-        .destination {
-            font-size: large;
-            background-color: #211e0f;
-            margin: 5px 0;
-            padding: 1px;
-        }
-
-        .callingAt {
-            background-color: #211e0f;
-            margin: 5px 0;
-            padding: 1px;
-        }
-        .callingPoints {
-            margin-top: 2px;
-
-            p {
-                background-color: #211e0f;
-                margin: 5px 0;
-                padding: 1px;
-            }
-        }
-        .toc {
-            background-color: #211e0f;
-            padding: 1px;
-            margin-bottom: 10px;
-            font-size: larger;
-        }
-    }
-
-    .bottom-align {
-        margin-top: auto;
-    }
-    .right-align {
-        float: right;
-    }
-
     @media only screen and (max-width: 600px) {
         .boards {
             width: 300px;
@@ -229,14 +168,6 @@
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-        }
-
-        .board {
-            width: 90%;
-            flex-shrink: 0;
-            height: 95%;
-            // margin: 0;
-            scroll-snap-align: start;
         }
     }
 </style>
