@@ -2,8 +2,6 @@
     <div id="tube">
         <Clock/>
 
-        <Main text="Click Me" bg="#fff" color="#000" hoverColor="#424242" />
-
         <div class="select">
             <Select items="{naptanIDs}" bind:selectedValue="{currentNaptan}" on:select="{handleStationSelect}" isClearable="{false}" showIndicator="{true}" placeholder="Kings's Cross St. Pancras" />
         </div>
@@ -38,7 +36,8 @@
     import { onMount } from 'svelte';
     import Select from 'svelte-select';
 
-    import Tube from '../../components/boards/Tube.svelte';
+    import Clock from '../../components/common/clock.svelte';
+    import Tube from '../../components/boards/Tube.svelte';    
 
     import { host } from '../../assets/data/globals';
     import _naptanIDs from '../../assets/data/naptan';
@@ -47,7 +46,6 @@
 
     import type naptanID from '../../interfaces/naptanID';
     import type IlistStationArrivals from '../../interfaces/listStationArrivals';
-    import Main from '../../components/common/buttons/main.svelte';
 
     let currentNaptan: naptanID = { value: '940GZZLUKSX', label: "King's Cross St. Pancras" };
     let currentStation: IlistStationArrivals;
@@ -98,8 +96,6 @@
             clearInterval(dataInterval);
         };
     });
-
-    import Clock from '../../components/common/clock.svelte';
 </script>
 
 <style lang="less">
