@@ -1,6 +1,6 @@
 <main>
     <div id="tube">
-        <Clock/>
+        <Clock />
 
         <div class="select">
             <Select items="{naptanIDs}" bind:selectedValue="{currentNaptan}" on:select="{handleStationSelect}" isClearable="{false}" showIndicator="{true}" placeholder="Kings's Cross St. Pancras" />
@@ -37,7 +37,7 @@
     import Select from 'svelte-select';
 
     import Clock from '../../components/common/clock.svelte';
-    import Tube from '../../components/boards/Tube.svelte';    
+    import Tube from '../../components/boards/Tube.svelte';
 
     import { host } from '../../assets/data/globals';
     import _naptanIDs from '../../assets/data/naptan';
@@ -164,11 +164,6 @@
         .boards {
             flex-direction: column;
             width: 100%;
-
-            .board {
-                min-width: 95%;
-                padding: 0;
-            }
         }
     }
 </style>
