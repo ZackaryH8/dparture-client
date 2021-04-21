@@ -89,4 +89,11 @@
     .capitalize {
         text-transform: capitalize;
     }
+
+    @media only screen and (max-width: 600px) {
+        .board {
+            min-width: 95%;
+            padding: 0;
+        }
+    }
 </style>
