@@ -8,5 +8,5 @@
     "svelteStrictMode": true,
     "svelteBracketNewLine": false,
     "svelteAllowShorthand": true,
-    "svelteIndentScriptAndStyle": false
+    "svelteIndentScriptAndStyle": true
 }

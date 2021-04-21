@@ -6,7 +6,7 @@
 </td>
 
 <script>
-import { getLineBGColor, getLineTextColor, getDistruptionColor } from '../../helpers/color';
+    import { getLineBGColor, getLineTextColor, getDistruptionColor } from '../../helpers/color';
 
-export let line = null;
+    export let line = null;
 </script>
