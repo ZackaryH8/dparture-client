@@ -38,7 +38,7 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { parse } from 'qs';
+    import qs from 'query-string';
     import { querystring } from 'svelte-spa-router';
     import type * as NRData from '../../interfaces/NRData';
 
