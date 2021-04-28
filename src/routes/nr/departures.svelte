@@ -47,7 +47,7 @@
     let errorMessage: string = '';
     let currentStation: NRData.CurrentStation;
     let lastCrs: string = '';
-    $: crs = parse($querystring).crs?.toUpperCase() || 'PBO';
+    $: crs = qs.parse($querystring).crs?.toString().toUpperCase() || 'PBO';
     $: if (crs && crs.length === 3) {
         updateTrainServicesByCRS(crs);
     }
