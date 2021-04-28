@@ -21,6 +21,11 @@
             <label for="showCP">Calling Point Times?</label><br />
         </div>
 
+        <div class="split-even">
+            <input type="checkbox" id="lastlocation" name="lastlocation" />
+            <label for="lastlocation">Save last location?</label><br />
+        </div>
+
         {#if currentStation?.trainServices?.length >= 1}
             <div class="boards">
                 {#each currentStation.trainServices as service}
