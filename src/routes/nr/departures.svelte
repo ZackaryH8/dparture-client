@@ -84,8 +84,9 @@
 
     onMount(() => {
         // if(urlCRS) crs = urlCRS.crs.toUpperCase()
-
-        updateTrainServicesByCRS(crs);
+        const dataInterval = setInterval(() => {
+            updateTrainServicesByCRS(crs);
+        }, 60000);
 
         const pageInterval = setInterval(() => {
             showPlatform = !showPlatform;
@@ -102,6 +103,7 @@
 
         /* Update the train services */
         return () => {
+            clearInterval(dataInterval);
             clearInterval(pageInterval);
         };
     });
