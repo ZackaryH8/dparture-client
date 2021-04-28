@@ -163,18 +163,10 @@
             margin-right: 10px;
         }
     }
-
     @media only screen and (max-width: 600px) {
         .boards {
-            width: 300px;
-            height: 530px;
-            display: flex;
-            overflow-x: auto;
-            justify-content: initial;
-            flex-wrap: initial;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+            flex-direction: column;
+            width: 100%;
         }
     }
 </style>
