@@ -1,6 +1,6 @@
 <main>
     <div id="nr">
-        <Clock/>
+        <Clock />
         <br />
         <div class="split-even">
             <label>
