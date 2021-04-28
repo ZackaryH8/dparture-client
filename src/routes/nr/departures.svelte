@@ -165,8 +165,16 @@
     }
     @media only screen and (max-width: 600px) {
         .boards {
-            flex-direction: column;
-            width: 100%;
+            width: 300px;
+            height: 530px;
+            display: flex;
+            overflow-x: auto;
+            justify-content: initial;
+            flex-wrap: initial;
+            -ms-scroll-snap-type: x mandatory;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
     }
 </style>
