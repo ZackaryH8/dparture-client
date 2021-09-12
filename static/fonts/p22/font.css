@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'P22 Johnston Underground';
+    src: url('./P22JohnstonUnderground.woff2') format('woff2'), url('./P22JohnstonUnderground.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

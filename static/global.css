@@ -1,0 +1,94 @@
+@import 'fonts/DotMatrix/font.css';
+@import 'fonts/p22/font.css';
+
+* {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+/*#sapper {*/
+/*	height: 100%;*/
+/*}*/
+
+html,
+body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}
+
+body {
+    background-color: #181a1b;
+    /* background-image: url(https://wallpaperaccess.com/full/194796.jpg);
+    backdrop-filter: blur(5px); */
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'P22 Johnston Underground', serif;
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+}
+body::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+}
+body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+a {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+    color: #fff !important;
+}
+
+label {
+    display: block;
+}
+
+input,
+button,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    -webkit-padding: 0.4em 0;
+    padding: 0.4em;
+    margin: 0 0 0.5em 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+input:disabled {
+    color: #ccc;
+}
+
+button {
+    color: #333;
+    background-color: #f4f4f4;
+    outline: none;
+}
+
+button:disabled {
+    color: #999;
+}
+
+button:not(:disabled):active {
+    background-color: #ddd;
+}
+
+button:focus {
+    border-color: #666;
+}
+
+#sapper {
+    height: 100%;
+}
