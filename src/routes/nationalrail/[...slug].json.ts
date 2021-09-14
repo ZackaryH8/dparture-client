@@ -22,6 +22,7 @@ export function get(req, res, next) {
             })
         );
     } else {
+        // This bit does not work - obviously because it needs a eperate page to the departures
         if (type === 'arrivals') {
             rail.getArrivalsBoardWithDetails(crs.toUpperCase(), {}, (err, result) => {
                 if (err) {
