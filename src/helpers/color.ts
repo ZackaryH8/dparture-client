@@ -1,7 +1,7 @@
 import { colors } from './tflColors';
 
 export function getLineBGColor(name: string): string {
-    return colors.find((color: any) => color.name === name)?.hex;
+    return colors.find((color: {name: string, hex: string}) => color.name === name)?.hex;
 }
 
 export function getLineTextColor(name: string): string {
